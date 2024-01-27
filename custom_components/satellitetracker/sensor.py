@@ -16,10 +16,10 @@ from homeassistant.helpers.update_coordinator import (
 from . import N2YOLocationCoordinator, N2YOSatelliteCoordinator
 
 from .const import (
-    ATTR_IDENTIFIERS, 
-    ATTR_MANUFACTURER, 
-    ATTR_MODEL, 
-    DOMAIN, 
+    ATTR_IDENTIFIERS,
+    ATTR_MANUFACTURER,
+    ATTR_MODEL,
+    DOMAIN,
     COORDINATOR,
     CONF_MIN_VISIBILITY,
     DEFAULT_MIN_VISIBILITY,
@@ -98,7 +98,7 @@ class SatelliteSensor(CoordinatorEntity):
     def unit_of_measurement(self):
         """Return the UoM for this entity."""
         return UnitOfTime.SECONDS
-    
+
     @property
     def state(self):
         """Return the state for this entity."""
@@ -106,7 +106,7 @@ class SatelliteSensor(CoordinatorEntity):
 
         if len(self.coordinator.data["visual_passes"]) > self._sat_count:
             pass_data = self.coordinator.data["visual_passes"][self._sat_count]
-            state = pass_data["duration"]
+            state = pass_data["maxEl"]
 
         return state
 
@@ -155,7 +155,7 @@ class SatelliteSensor(CoordinatorEntity):
             ATTR_MODEL: device_model,
         }
 
-       
+
 
 class LocationSensor(CoordinatorEntity):
     """Defines a location tracker sensor."""
@@ -222,7 +222,7 @@ class LocationSensor(CoordinatorEntity):
     def unit_of_measurement(self):
         """Return the UoM for this entity."""
         return "satellites"
-    
+
     @property
     def device_info(self):
         """Define the device based on device_identifier."""

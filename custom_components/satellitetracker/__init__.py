@@ -12,8 +12,8 @@ from homeassistant.exceptions import ConfigEntryNotReady, PlatformNotReady
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 from homeassistant.helpers import aiohttp_client
 from homeassistant.const import (
-    CONF_API_KEY, 
-    CONF_LATITUDE, 
+    CONF_API_KEY,
+    CONF_LATITUDE,
     CONF_LONGITUDE,
     CONF_SCAN_INTERVAL,
     CONF_ELEVATION,
@@ -23,10 +23,10 @@ from homeassistant.const import (
 )
 
 from .const import (
-    COORDINATOR, 
-    DOMAIN, 
-    SATELLITE_API, 
-    DEFAULT_POLLING_INTERVAL, 
+    COORDINATOR,
+    DOMAIN,
+    SATELLITE_API,
+    DEFAULT_POLLING_INTERVAL,
     TRACKER_TYPE,
     DEFAULT_MIN_VISIBILITY,
     CONF_MIN_VISIBILITY,
@@ -113,7 +113,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
         raise ConfigEntryNotReady
 
     hass.data[DOMAIN][entry.entry_id] = {
-        COORDINATOR: coordinator, 
+        COORDINATOR: coordinator,
         SATELLITE_API: api,
         CONF_TYPE: tracker_type
     }
@@ -210,7 +210,7 @@ class N2YOLocationCoordinator(N2YOUpdateCoordinator):
                 search_radius=self.radius,
                 category_id=self.category,
             )
-            
+
             return update_data
         except ConnectionError as error:
             _LOGGER.info("N2YO API: %s", error)
@@ -253,17 +253,16 @@ class N2YOSatelliteCoordinator(N2YOUpdateCoordinator):
                 id=self._satellite,
                 seconds=1,
             )
-            visual_passes_data = await self.api.get_visualpasses(
+            visual_passes_data = await self.api.get_radiopasses(
                 id=self._satellite,
                 days=10,
-                min_visibility=self._min_visibility,
+                min_elevation=self._min_visibility,
             )
 
             visual_passes = []
 
             for this_pass in visual_passes_data:
-                if this_pass["duration"] > self._min_visibility:
-                    visual_passes.append(this_pass)
+                visual_passes.append(this_pass)
 
             return {
                 "positions":positions_data,
@@ -277,5 +276,5 @@ class N2YOSatelliteCoordinator(N2YOUpdateCoordinator):
             _LOGGER.info("N2YO API: %s", error)
             raise UpdateFailed from error
 
-        
+
 
