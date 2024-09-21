@@ -3,7 +3,7 @@ import asyncio
 from datetime import timedelta
 import logging
 
-from n2yoasync import N2YO, N2YOSatelliteCategory
+from .n2yoasync import N2YO, N2YOSatelliteCategory
 import voluptuous as vol
 
 from homeassistant.config_entries import ConfigEntry

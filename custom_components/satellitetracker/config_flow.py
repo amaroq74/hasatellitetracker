@@ -1,5 +1,5 @@
 """Config flow for Satellite Tracker integration."""
-from n2yoasync import N2YO, N2YOSatelliteCategory, AuthenticationError
+from .n2yoasync import N2YO, N2YOSatelliteCategory, AuthenticationError
 import voluptuous as vol
 import aiohttp
 import logging
@@ -9,8 +9,8 @@ from homeassistant.helpers import config_entry_flow
 from homeassistant.helpers import aiohttp_client
 from homeassistant.core import callback
 from homeassistant.const import (
-    CONF_API_KEY, 
-    CONF_LATITUDE, 
+    CONF_API_KEY,
+    CONF_LATITUDE,
     CONF_LONGITUDE,
     CONF_SCAN_INTERVAL,
     CONF_ELEVATION,
@@ -20,9 +20,9 @@ from homeassistant.const import (
 )
 
 from .const import (
-    DOMAIN, 
-    CONF_MIN_VISIBILITY, 
-    DEFAULT_MIN_VISIBILITY, 
+    DOMAIN,
+    CONF_MIN_VISIBILITY,
+    DEFAULT_MIN_VISIBILITY,
     DEFAULT_POLLING_INTERVAL,
     CONF_SATELLITE,
     CONF_MIN_ALERT,
@@ -46,7 +46,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     async def async_step_user(self, user_input=None):
         """Handle the initial step."""
         errors = {}
-        
+
         if user_input is not None:
             session = aiohttp_client.async_get_clientsession(self.hass)
             key = user_input[CONF_API_KEY]
@@ -103,7 +103,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 }
             )
         )
-    
+
     async def async_step_location(self, user_input=None):
         """Enter the appropriate location data."""
         categories = {}
